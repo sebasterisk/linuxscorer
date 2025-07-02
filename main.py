@@ -14,8 +14,21 @@ class Module(App):
     TITLE = "Linux Returner Diagnostic Image"
     CSS_PATH = "./css.tcss"
     
-    VULNS = [
-        Vuln(Answer("regex_match_file", checking_for = r"^hello world!$", in_path = Path("/home/acirr/hello_world")), points = 5, desc = "Hello World!")
+    VULNS = [ 
+        Vuln(Answer("regex_match_file", checking_for = r"^anonymous_enable=NO$", in_path = Path("/etc/vsftpd.conf")), points = 5, desc = "Anonymous users disabled on FTP server"),
+        Vuln(Answer("regex_match_file", checking_for = r"^ssl_enable=YES$", in_path = Path("/etc/vsftpd.conf")), points = 5, desc = "SSL enabled on FTP server"),
+        Vuln(Answer("regex_match_file", checking_for = r"^chroot_local_user=YES$", in_path = Path("/etc/vsftpd.conf")), points = 5, desc = "Users are chrooted on FTP server"),
+
+        Vuln(
+            Answer("regex_match_file", checking_for = r"^Port 22$", in_path = Path("/etc/ssh/sshd_config")), 
+            Answer("regex_miss_file", checking_for = r"^Port 7772$", in_path = Path("/etc/ssh/sshd_config")), 
+            points = 2, desc = "Fixed incorrect SSH port number"
+        ),
+        Vuln(Answer("regex_match_file", checking_for = r"^StrictModes yes$", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH Strict modes enabled"),
+        Vuln(Answer("regex_match_file", checking_for = r"^PermitRootLogin no$", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH root login disabled"),
+        Vuln(Answer("regex_match_file", checking_for = r"^X11Forwarding no$", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH X11 forwarding disabled"),
+        Vuln(Answer("regex_match_file", checking_for = r"^PermitEmptyPasswords no$", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "Empty passwords are not permitted for SSH"),
+        Vuln(Answer("regex_match_file", checking_for = r"^UsePam yes$", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH uses PAM")
     ]
 
     VULNLIST = VulnList(VULNS)
