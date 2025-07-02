@@ -15,20 +15,27 @@ class Module(App):
     CSS_PATH = "./css.tcss"
     
     VULNS = [ 
-        Vuln(Answer("regex_match_file", checking_for = r"^anonymous_enable=NO$", in_path = Path("/etc/vsftpd.conf")), points = 5, desc = "Anonymous users disabled on FTP server"),
-        Vuln(Answer("regex_match_file", checking_for = r"^ssl_enable=YES$", in_path = Path("/etc/vsftpd.conf")), points = 5, desc = "SSL enabled on FTP server"),
-        Vuln(Answer("regex_match_file", checking_for = r"^chroot_local_user=YES$", in_path = Path("/etc/vsftpd.conf")), points = 5, desc = "Users are chrooted on FTP server"),
+        Vuln(Answer("regex_match_file", checking_for = r"^anonymous_enable=NO", in_path = Path("/etc/vsftpd.conf")), points = 5, desc = "Anonymous users disabled on FTP server"),
+        Vuln(Answer("regex_match_file", checking_for = r"^ssl_enable=YES", in_path = Path("/etc/vsftpd.conf")), points = 5, desc = "SSL enabled on FTP server"),
+        Vuln(Answer("regex_match_file", checking_for = r"^chroot_local_user=YES", in_path = Path("/etc/vsftpd.conf")), points = 5, desc = "Users are chrooted on FTP server"),
 
         Vuln(
-            Answer("regex_match_file", checking_for = r"^Port 22$", in_path = Path("/etc/ssh/sshd_config")), 
-            Answer("regex_miss_file", checking_for = r"^Port 7772$", in_path = Path("/etc/ssh/sshd_config")), 
+            Answer("regex_match_file", checking_for = r"^Port 22", in_path = Path("/etc/ssh/sshd_config")), 
+            Answer("regex_miss_file", checking_for = r"^Port 7772", in_path = Path("/etc/ssh/sshd_config")), 
             points = 2, desc = "Fixed incorrect SSH port number"
         ),
-        Vuln(Answer("regex_match_file", checking_for = r"^StrictModes yes$", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH Strict modes enabled"),
-        Vuln(Answer("regex_match_file", checking_for = r"^PermitRootLogin no$", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH root login disabled"),
-        Vuln(Answer("regex_match_file", checking_for = r"^X11Forwarding no$", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH X11 forwarding disabled"),
-        Vuln(Answer("regex_match_file", checking_for = r"^PermitEmptyPasswords no$", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "Empty passwords are not permitted for SSH"),
-        Vuln(Answer("regex_match_file", checking_for = r"^UsePam yes$", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH uses PAM")
+        Vuln(Answer("regex_match_file", checking_for = r"^StrictModes yes", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH Strict modes enabled"),
+        Vuln(Answer("regex_match_file", checking_for = r"^PermitRootLogin no", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH root login disabled"),
+        Vuln(Answer("regex_match_file", checking_for = r"^X11Forwarding no", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH X11 forwarding disabled"),
+        Vuln(Answer("regex_match_file", checking_for = r"^PermitEmptyPasswords no", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "Empty passwords are not permitted for SSH"),
+        Vuln(Answer("regex_match_file", checking_for = r"^UsePam yes", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH uses PAM"),
+    
+        Vuln(Answer("regex_match_file", checking_for = r"^PASS_MAX_DAYS\s+90", in_path = Path("/etc/login.defs")), points = 2, desc = "Password maximum age is set to 90 days"),
+        
+        Vuln(Answer("regex_match_file", checking_for = r"^minlen\s+=\s+12", in_path = Path("/etc/security/pwquality.conf")), points = 4, desc = "Password must be at least 12 characters in length"),
+
+        Vuln(Answer("regex_match_file", checking_for = r"^ENABLED=yes", in_path = Path("/etc/ufw/ufw.conf")), points = 3, desc = "UFW is enabled"),
+        Vuln(Answer("regex_match_file", checking_for = r"^LOGLEVEL=high", in_path = Path("/etc/ufw/ufw.conf")), points = 3, desc = "UFW logging set to high")
     ]
 
     VULNLIST = VulnList(VULNS)
