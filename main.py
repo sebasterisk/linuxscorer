@@ -16,8 +16,8 @@ class Module(App):
     
     VULNS = [ 
         # user/group
-        Vuln(Answer("substr_in_file", checking_for = "mmarana", in_path = Path("/etc/group")), points = 3, desc = "Remove unauthorized user mmarana"),
-        Vuln(Answer("substr_in_file", checking_for = "mtampus", in_path = Path("/etc/group")), points = 3, desc = "Remove unauthorized user mtampus"),
+        Vuln(Answer("substr_not_file", checking_for = "mmarana", in_path = Path("/etc/group")), points = 3, desc = "Remove unauthorized user mmarana"),
+        Vuln(Answer("substr_not_file", checking_for = "mtampus", in_path = Path("/etc/group")), points = 3, desc = "Remove unauthorized user mtampus"),
         Vuln(
             Answer("regex_miss_file", checking_for = r"^adm.+abossle.+", in_path = Path("/etc/group")),
             Answer("regex_miss_file", checking_for = r"^sudo.+abossle.+", in_path = Path("/etc/group")),
@@ -58,7 +58,7 @@ class Module(App):
             Answer("regex_match_file", checking_for = r"^\s*ocredit\s*=\s*-1", in_path = Path("/etc/security/pwquality.conf")), 
             points = 4, desc = "Password must have 1 uppercase, 1 lowercase, 1 digit, and 1 special character"
         ),
-        Vuln(Answer("substr_not_file", checking_for = "nullok", in_path = Path("/etc/security/pwquality.conf")), points = 5, desc = "Null passwords are not allowed"),
+        Vuln(Answer("substr_not_file", checking_for = "nullok", in_path = Path("/etc/pam.d/common-password")), points = 5, desc = "Null passwords are not allowed"),
 
         # ufw
         Vuln(Answer("regex_match_file", checking_for = r"^ENABLED=yes", in_path = Path("/etc/ufw/ufw.conf")), points = 3, desc = "UFW is enabled"),
