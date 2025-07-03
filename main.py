@@ -16,8 +16,8 @@ class Module(App):
     
     VULNS = [ 
         # user/group
-        Vuln(Answer("substr_in_file"), checking_for = "mmarana", in_path = Path("/etc/group"), points = 3, desc = "Remove unauthorized user mmarana"),
-        Vuln(Answer("substr_in_file"), checking_for = "mtampus", in_path = Path("/etc/group"), points = 3, desc = "Remove unauthorized user mtampus"),
+        Vuln(Answer("substr_in_file", checking_for = "mmarana", in_path = Path("/etc/group")), points = 3, desc = "Remove unauthorized user mmarana"),
+        Vuln(Answer("substr_in_file", checking_for = "mtampus", in_path = Path("/etc/group")), points = 3, desc = "Remove unauthorized user mtampus"),
         Vuln(
             Answer("regex_miss_file", checking_for = r"^adm.+abossle.+", in_path = Path("/etc/group")),
             Answer("regex_miss_file", checking_for = r"^sudo.+abossle.+", in_path = Path("/etc/group")),
