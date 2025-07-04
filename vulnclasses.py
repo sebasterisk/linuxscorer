@@ -1,5 +1,4 @@
-# import os
-# import subprocess
+import subprocess
 from pathlib import Path as path
 import re
 
@@ -61,14 +60,27 @@ class Answer():
                 if not (path_exists): return False
                 return not self.path.exists()
             # --~----~----~----~--
-            # case "perm_check":          # does the permission string match checking_for? like "drw-rw-r--"
-            #     pass
-            # case "uid_own_check":       # does the file owner uid match checking_for?
-            #     pass
-            # case "gid_own_check":       # does the file owner gid match checking_for?
-            #     pass
-            # case "service_up":          # is the SystemV service active?
-            #     pass
+            case "perm_check":          # does the permission octal match?
+                if not (checking_for_exists and path_exists): return False
+                result = subprocess.run(["stat", r"-c '%a'", self.path.as_posix()], capture_output=True, encoding="utf-8")
+                return self.checking_for in result.stdout
+            # --~----~----~----~--
+            case "user_own_check":       # does the file owner username match checking_for?
+                if not (checking_for_exists and path_exists): return False
+                result = self.path.owner()
+                return result == self.checking_for
+            # --~----~----~----~--
+            case "group_own_check":       # does the file owner gid match checking_for?
+                if not (checking_for_exists and path_exists): return False
+                result = self.path.group()
+                return result == self.checking_for
+            # --~----~----~----~--
+            case "service_up":          # is the SystemV service active?
+                if not (checking_for_exists): return False
+                result = subprocess.call(["systemctl", "is-active", "--quiet", self.checking_for])
+                if result != 0:
+                    return False
+                return True
 
 class Vuln():
     def __init__(

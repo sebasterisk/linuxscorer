@@ -18,7 +18,6 @@ class Module(App):
         # phorensixs
         Vuln(Answer("regex_match_file", checking_for = r"^ANSWER:\s*spiritofthescarf\s*$", in_path = Path("/home/sebastian/Ticket-1.txt")), points = 14, desc = "Correct response to Ticket 1"),
 
-
         # user/group
         Vuln(Answer("substr_not_file", checking_for = "mmarana", in_path = Path("/etc/group")), points = 3, desc = "Remove unauthorized user mmarana"),
         Vuln(Answer("substr_not_file", checking_for = "mtampus", in_path = Path("/etc/group")), points = 3, desc = "Remove unauthorized user mtampus"),
@@ -66,8 +65,12 @@ class Module(App):
 
         # ufw
         Vuln(Answer("regex_match_file", checking_for = r"^ENABLED=yes", in_path = Path("/etc/ufw/ufw.conf")), points = 3, desc = "UFW is enabled"),
-        Vuln(Answer("regex_match_file", checking_for = r"^LOGLEVEL=high", in_path = Path("/etc/ufw/ufw.conf")), points = 3, desc = "UFW logging set to high")
+        Vuln(Answer("regex_match_file", checking_for = r"^LOGLEVEL=high", in_path = Path("/etc/ufw/ufw.conf")), points = 3, desc = "UFW logging set to high"),
 
+        # permission settings
+        Vuln(Answer("perm_check", checking_for="600", in_path=Path("/etc/shadow")), points = 6, desc = "Correct permissions set for /etc/shadow"),
+        Vuln(Answer("perm_check", checking_for="644", in_path=Path("/etc/passwd")), points = 6, desc = "Correct permissions set for /etc/passwd"),
+        Vuln(Answer("perm_check", checking_for="1777", in_path=Path("/tmp")), points = 7, desc = "Stickybit set for /tmp")
     ]
 
     VULNLIST = VulnList(VULNS)
