@@ -81,6 +81,12 @@ class Answer():
                 if result != 0:
                     return False
                 return True
+            case "service_down":
+                if not (checking_for_exists): return False
+                result = subprocess.call(["systemctl", "is-active", "--quiet", self.checking_for])
+                if result != 0:
+                    return True
+                return False
 
 class Vuln():
     def __init__(

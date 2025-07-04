@@ -67,10 +67,29 @@ class Module(App):
         Vuln(Answer("regex_match_file", checking_for = r"^ENABLED=yes", in_path = Path("/etc/ufw/ufw.conf")), points = 3, desc = "UFW is enabled"),
         Vuln(Answer("regex_match_file", checking_for = r"^LOGLEVEL=high", in_path = Path("/etc/ufw/ufw.conf")), points = 3, desc = "UFW logging set to high"),
 
+        # annoyances
+        Vuln(Answer("substr_not_file", checking_for="alias nano=", in_path = Path("/etc/profile.d/20-startup.sh")), points = 4, desc = "Malicious alias removed"),
+
+        # malware/unwanted services
+        Vuln(Answer("service_down", checking_for="apache2"), points = 6, desc = "Apache2 service removed or disabled"),
+        Vuln(Answer("path_not_exist", in_path=Path("/bin/x11vnc")), points = 6, desc = "Unwanted software x11vnc removed"),
+
+
+        # sysctl
+        Vuln(Answer("regex_match_file", checking_for=r"^net.ipv4.conf.all.accept_source_route = 0", in_path=Path("/etc/shadow")), points = 6, desc = "System does not accept source route"),
+
         # permission settings
         Vuln(Answer("perm_check", checking_for="600", in_path=Path("/etc/shadow")), points = 6, desc = "Correct permissions set for /etc/shadow"),
         Vuln(Answer("perm_check", checking_for="644", in_path=Path("/etc/passwd")), points = 6, desc = "Correct permissions set for /etc/passwd"),
-        Vuln(Answer("perm_check", checking_for="1777", in_path=Path("/tmp")), points = 7, desc = "Stickybit set for /tmp")
+        Vuln(Answer("perm_check", checking_for="1777", in_path=Path("/tmp")), points = 7, desc = "Stickybit set for /tmp"),
+
+        # firefox
+        Vuln(Answer("substr_not_file", checking_for='"browser.safebrowsing.malware.enabled", false', in_path=Path("/home/sebastian/.mozilla/firefox/8p4igdi0.default-release/prefs.js")),
+            points=5, desc="Safe browsing malware checks enabled in Firefox"
+        ),
+        Vuln(Answer("substr_in_file", checking_for='"privacy.donottrackheader.enabled", true', in_path=Path("/home/sebastian/.mozilla/firefox/8p4igdi0.default-release/prefs.js")),
+            points=5, desc="Do not track header enabled in Firefox"
+        )
     ]
 
     VULNLIST = VulnList(VULNS)
