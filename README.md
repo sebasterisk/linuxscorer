@@ -28,4 +28,6 @@ pip install -r .../requirements.txt
 ```
 alias score="python3 .../main.py"
 ```
-5. Have... fun?
+Additionally, you can create a `.desktop` entry file on the desktop to run the script directly from there.
+Make sure to set `Terminal=true`.
+5. Have fun?
