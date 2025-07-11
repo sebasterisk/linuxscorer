@@ -7,14 +7,7 @@ A template Linux scorebot and TUI, a natural evolution of [linuxtrainer](//githu
 
 The `Answer` class is an issue that is checked when a `Vuln` is graded. You can check for substrings or regular expressions in a file, or if a filepath exists or not. The `Vuln` class then checks if all the `Answer`s are addressed correctly, and the `VulnList` class then checks which `Vuln`s have been fully resolved. The score report is then created in the main file and shown to the end user. 
 
-| Score type                                   | Answer "type" string | Requires `checking_for` | Requires `in_path` |
-|----------------------------------------------|----------------------|-------------------------|--------------------|
-| Check if file exists                         | `"path_exist"`       |    | ✓ |
-| Check if file doesn't exist                  | `"path_not_exist"`   |    | ✓ |
-| Check if file has text                       | `"substr_in_file"`   | ✓ | ✓ |
-| Check if file doesn't have text              | `"substr_not_file"`  | ✓ | ✓ |
-| Check if file has text that matches regex    | `"regex_match_file"` | ✓ | ✓ |
-| Check if file has no text that matches regex | `"regex_miss_file"`  | ✓ | ✓ |
+Use the `CheckTypes` enum to see which vuln scoring methods are available.
 
 ## how to use
 1. Download the repository and it's dependents in the requirements file into somewhere safe, such as in /etc. You may also find it useful to create a venv.
