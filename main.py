@@ -17,6 +17,9 @@ class Module(App):
     VULNS = [ 
         # phorensixs
         Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ANSWER:\s*spiritofthescarf\s*$", in_path = Path("/home/sebastian/Desktop/Ticket-1.txt")), points = 14, desc = "Correct response to Ticket 1"),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ANSWER:\s*making_more_propogandaa\s*$", in_path = Path("/home/sebastian/Desktop/Ticket-2.txt")), points = 8, desc = "Correct response to Ticket 2"),
+
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ANSWER:\s*7772\s*$", in_path = Path("/home/sebastian/Desktop/Ticket-4.txt")), points = 4, desc = "Correct response to Ticket 4"),
 
         # user/group
         Vuln(Answer(CheckType.STRING_NOT_FOUND, checking_for = "mmarana", in_path = Path("/etc/group")), points = 3, desc = "Remove unauthorized user mmarana"),
