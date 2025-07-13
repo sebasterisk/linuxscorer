@@ -35,7 +35,7 @@ class Module(App):
         Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/home/cbaummer/.plist")), points=2, desc="Removed unwanted file"),
 
         # sudoers
-        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^%sudo\s+ALL=\(ALL:ALL\) ALL", in_path = Path("/etc/sudoers")), points = 3, desc = "Sudo requires password for all admins"),
+        Vuln(Answer(CheckType.STRING_NOT_FOUND, checking_for = "NOPASSWD", in_path = Path("/etc/sudoers")), points = 3, desc = "Sudo requires password for all admins"),
 
         # ftp
         Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^anonymous_enable=NO", in_path = Path("/etc/vsftpd.conf")), points = 5, desc = "Anonymous users disabled on FTP server"),
