@@ -31,6 +31,11 @@ class Module(App):
             Answer(CheckType.REGEX_MATCHES, checking_for = r"^alumni.+mdallas.+", in_path = Path("/etc/group")),
             points = 3, desc = "Changed appropriate groups for user mdallas"
         ),
+        Vuln(Answer(CheckType.STRING_NOT_FOUND, checking_for = "cbaummer:$y$j9T$bFMpxRP8oK5.ivpj29cO", in_path = Path("/etc/shadow")), points = 2, desc = "Change insecure password for cbaummer"),
+        Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/home/cbaummer/.plist")), points=2, desc="Removed unwanted file"),
+
+        # sudoers
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^%sudo\s+ALL=\(ALL:ALL\) ALL", in_path = Path("/etc/sudoers")), points = 3, desc = "Sudo requires password for all admins"),
 
         # ftp
         Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^anonymous_enable=NO", in_path = Path("/etc/vsftpd.conf")), points = 5, desc = "Anonymous users disabled on FTP server"),
@@ -68,12 +73,13 @@ class Module(App):
         Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^LOGLEVEL=high", in_path = Path("/etc/ufw/ufw.conf")), points = 3, desc = "UFW logging set to high"),
 
         # annoyances
+        Vuln(Answer(CheckType.STRING_NOT_FOUND, checking_for = "apt install -y -qq x11vnc >/dev/null 2>&1", in_path = Path("/etc/crontab")), points = 4, desc = "Malicious cron job removed"),
         Vuln(Answer(CheckType.STRING_NOT_FOUND, checking_for="alias nano=", in_path = Path("/etc/profile.d/20-startup.sh")), points = 4, desc = "Malicious alias removed"),
 
         # malware/unwanted services
         Vuln(Answer(CheckType.SERVICE_DOWN, checking_for="apache2"), points = 6, desc = "Apache2 service removed or disabled"),
         Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/bin/x11vnc")), points = 6, desc = "Unwanted software x11vnc removed"),
-
+    
 
         # sysctl
         Vuln(Answer(CheckType.REGEX_MATCHES, checking_for=r"^net.ipv4.conf.all.accept_source_route = 0", in_path=Path("/etc/shadow")), points = 6, desc = "System does not accept source route"),
