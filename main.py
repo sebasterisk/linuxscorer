@@ -102,7 +102,7 @@ class Module(App):
 
         # readme install
         Vuln(Answer(CheckType.SERVICE_UP, checking_for="auditd"), points = 7, desc = "Auditd running as requested"),
-        Vuln(Answer(CheckType.STRING_FOUND_CMD_STDOUT, checking_for="/etc/passwd", command_to_run="auditctl -l"), points = 1, desc = "Auditd logs changes to /etc/passwd"),
+        Vuln(Answer(CheckType.STRING_FOUND_CMD_STDOUT, checking_for="/etc/passwd", command_to_run=["auditctl", "-l"]), points = 1, desc = "Auditd logs changes to /etc/passwd"),
     ]
 
     VULNLIST = VulnList(VULNS)

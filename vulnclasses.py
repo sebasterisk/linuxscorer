@@ -68,7 +68,7 @@ class Answer():
             checking_for: str | None = None, 
             in_path: path | None = None,
             path_gone_ok: bool = False,
-            command_to_run: str | None = None
+            command_to_run: list[str] | None = None
         ):
 
         self.type = type
@@ -149,20 +149,23 @@ class Answer():
             # --~----~----~----~--
             case CheckType.SERVICE_UP:          # is the SystemV service active?
                 if not (checking_for_exists): return False
-                result = subprocess.call(["systemctl", "is-active", "--quiet", self.checking_for])
-                if result != 0:
-                    return False
-                return True
+                result = subprocess.run(["systemctl", "is-active", "--quiet", self.checking_for])
+                if result == 0:
+                    return True
+                return False
+            # --~----~----~----~--
             case CheckType.SERVICE_DOWN:
                 if not (checking_for_exists): return False
                 result = subprocess.call(["systemctl", "is-active", "--quiet", self.checking_for])
                 if result != 0:
                     return True
                 return False
+            # --~----~----~----~--
             case CheckType.STRING_FOUND_CMD_STDOUT:
                 if not (checking_for_exists and custom_command_exists): return False
-                result = subprocess.run([self.command_to_run], capture_output=True, encoding="utf-8")
+                result: subprocess.CompletedProcess = subprocess.run(self.command_to_run, capture_output=True, encoding="utf-8")
                 return self.checking_for in result.stdout
+            
 
 class Vuln():
     def __init__(
