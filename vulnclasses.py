@@ -97,7 +97,7 @@ class Answer():
     def check_answer(self):
         checking_for_exists = isinstance(self.checking_for, str)
         path_obj_exists = isinstance(self.path, path)
-        custom_command_exists = isinstance(self.command_to_run, str)
+        custom_command_exists = isinstance(self.command_to_run, list)
         
         path_paved = self.path.exists() if path_obj_exists else False
 
@@ -151,7 +151,7 @@ class Answer():
             case CheckType.GROUP:       # does the file owner gid match checking_for?
                 if not (checking_for_exists and path_obj_exists): return False
                 if (not path_paved): return self.path_gone_ok and (not path_paved)
-                
+
                 result = self.path.group()
                 return result == self.checking_for
             # --~----~----~----~--
