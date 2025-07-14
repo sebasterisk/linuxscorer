@@ -32,7 +32,7 @@ class Module(App):
         Vuln(
             Answer(CheckType.REGEX_NO_MATCH, checking_for = r"^current.+mdallas.+", in_path = Path("/etc/group")),
             Answer(CheckType.REGEX_MATCHES, checking_for = r"^alumni.+mdallas.+", in_path = Path("/etc/group")),
-            points = 3, desc = "Changed appropriate groups for user mdallas"
+            points = 2, desc = "Changed appropriate groups for user mdallas"
         ),
         Vuln(Answer(CheckType.STRING_NOT_FOUND, checking_for = "cbaummer:$y$j9T$bFMpxRP8oK5.ivpj29cO", in_path = Path("/etc/shadow")), points = 2, desc = "Change insecure password for cbaummer"),
         Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/home/cbaummer/.plist")), points=2, desc="Removed unwanted file"),
