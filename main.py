@@ -103,6 +103,10 @@ class Module(App):
         # readme install
         Vuln(Answer(CheckType.SERVICE_UP, checking_for="auditd"), points = 7, desc = "Auditd running as requested"),
         Vuln(Answer(CheckType.STRING_FOUND_CMD_STDOUT, checking_for="/etc/passwd", command_to_run=["auditctl", "-l"]), points = 1, desc = "Auditd logs changes to /etc/passwd"),
+        Vuln(Answer(CheckType.STRING_FOUND_CMD_STDOUT, checking_for="/etc/shadow", command_to_run=["auditctl", "-l"]), points = 1, desc = "Auditd logs changes to /etc/shadow"),
+        Vuln(Answer(CheckType.STRING_FOUND_CMD_STDOUT, checking_for="/etc/group", command_to_run=["auditctl", "-l"]), points = 1, desc = "Auditd logs changes to /etc/group"),
+        Vuln(Answer(CheckType.STRING_FOUND_CMD_STDOUT, checking_for="/etc/vsftpd.conf", command_to_run=["auditctl", "-l"]), points = 1, desc = "Auditd logs changes to FTP config"),
+        Vuln(Answer(CheckType.STRING_FOUND_CMD_STDOUT, checking_for="/etc/ssh/sshd_config", command_to_run=["auditctl", "-l"]), points = 1, desc = "Auditd logs changes to SSH config"),
     ]
 
     VULNLIST = VulnList(VULNS)
