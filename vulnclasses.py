@@ -97,7 +97,7 @@ class Answer():
     def check_answer(self):
         checking_for_exists = isinstance(self.checking_for, str)
         path_obj_exists = isinstance(self.path, path)
-        custom_command_exists = isinstance(self.command_to_run, path)
+        custom_command_exists = isinstance(self.command_to_run, str)
         
 
         path_paved = self.path.exists() if path_obj_exists else False
