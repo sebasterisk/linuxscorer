@@ -82,7 +82,7 @@ class Module(App):
         # malware/unwanted services
         Vuln(Answer(CheckType.SERVICE_DOWN, checking_for="apache2"), points = 6, desc = "Apache2 service removed or disabled"),
         Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/bin/x11vnc")), points = 6, desc = "Unwanted software x11vnc removed"),
-    
+        Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/usr/games/xcowsay")), points = 6, desc = "Unwanted software xcowsay removed"),
 
         # sysctl
         Vuln(Answer(CheckType.REGEX_MATCHES, checking_for=r"^net.ipv4.conf.all.accept_source_route = 0", in_path=Path("/etc/shadow")), points = 6, desc = "System does not accept source route"),
@@ -98,7 +98,11 @@ class Module(App):
         ),
         Vuln(Answer(CheckType.STRING_FOUND, checking_for='"privacy.donottrackheader.enabled", true', in_path=Path("/home/sebastian/.mozilla/firefox/8p4igdi0.default-release/prefs.js")),
             points=5, desc="Do not track header enabled in Firefox"
-        )
+        ),
+
+        # readme install
+        Vuln(Answer(CheckType.SERVICE_UP, checking_for="auditd"), points = 7, desc = "Auditd running as requested"),
+        Vuln(Answer(CheckType.STRING_FOUND_CMD_STDOUT, checking_for="/etc/passwd", command_to_run="auditctl -l"), points = 1, desc = "Auditd logs changes to /etc/passwd"),
     ]
 
     VULNLIST = VulnList(VULNS)

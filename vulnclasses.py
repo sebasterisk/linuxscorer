@@ -52,6 +52,14 @@ class CheckType(Enum):
     """
     Check if the service `checking_for` is down according to systemd.
     """
+    STRING_FOUND_CMD_STDOUT = "substr_stdout"
+    """
+    Check if the standard output of the command includes `checking_for`
+    """
+    STRING_NOT_FOUND_CMD_STDOUT = "substr_stdout"
+    """
+    Check if the standard output of the command does not include `checking_for`
+    """
 
 class Answer():
     def __init__(
@@ -60,12 +68,14 @@ class Answer():
             checking_for: str | None = None, 
             in_path: path | None = None,
             path_gone_ok: bool = False,
+            command_to_run: str | None = None
         ):
 
         self.type = type
         self.checking_for = checking_for
         self.path = in_path
         self.path_gone_ok = path_gone_ok
+        self.command_to_run = command_to_run
     
     def in_f_find(self, string: str, regex: bool, filepath: path):
         if regex:
@@ -87,6 +97,9 @@ class Answer():
     def check_answer(self):
         checking_for_exists = isinstance(self.checking_for, str)
         path_obj_exists = isinstance(self.path, path)
+        custom_command_exists = isinstance(self.command_to_run, path)
+        
+
         path_paved = self.path.exists() if path_obj_exists else False
 
         if (self.path_gone_ok) and (not path_paved): 
@@ -146,6 +159,10 @@ class Answer():
                 if result != 0:
                     return True
                 return False
+            case CheckType.STRING_FOUND_CMD_STDOUT:
+                if not (checking_for_exists and custom_command_exists): return False
+                result = subprocess.run([self.command_to_run], capture_output=True, encoding="utf-8")
+                return self.checking_for in result.stdout
 
 class Vuln():
     def __init__(
