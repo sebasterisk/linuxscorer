@@ -77,7 +77,7 @@ class Module(App):
 
         # annoyances
         Vuln(Answer(CheckType.STRING_NOT_FOUND, checking_for = "apt install -y -qq x11vnc >/dev/null 2>&1", in_path = Path("/etc/crontab")), points = 4, desc = "Malicious cron job removed"),
-        Vuln(Answer(CheckType.STRING_NOT_FOUND, checking_for="alias nano=", in_path = Path("/etc/profile.d/20-startup.sh")), points = 4, desc = "Malicious alias removed"),
+        Vuln(Answer(CheckType.STRING_NOT_FOUND, checking_for="alias nano=", in_path = Path("/etc/bash.bashrc")), points = 4, desc = "Malicious alias removed"),
 
         # malware/unwanted services
         Vuln(Answer(CheckType.SERVICE_DOWN, checking_for="apache2"), points = 6, desc = "Apache2 service removed or disabled"),
