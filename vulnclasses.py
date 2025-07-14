@@ -99,29 +99,31 @@ class Answer():
         path_obj_exists = isinstance(self.path, path)
         custom_command_exists = isinstance(self.command_to_run, str)
         
-
         path_paved = self.path.exists() if path_obj_exists else False
 
-        if (self.path_gone_ok) and (not path_paved): 
-            return True
-        elif (not self.path_gone_ok) and (not path_paved):
-            return False
-        
         match self.type:
             case CheckType.STRING_FOUND:      # is checking_for in the file?    
                 if not (checking_for_exists and path_obj_exists): return False
+                if (not path_paved): return self.path_gone_ok and (not path_paved)
+
                 return self.in_f_find(self.checking_for, False, self.path)
             # --~----~----~----~--
             case CheckType.STRING_NOT_FOUND:     # is checking_for NOT in the file?
                 if not (checking_for_exists and path_obj_exists): return False
+                if (not path_paved): return self.path_gone_ok and (not path_paved)
+
                 return not self.in_f_find(self.checking_for, False, self.path)
             # --~----~----~----~--
             case CheckType.REGEX_MATCHES:    # is the regex in checking_for matched anywhere in the file?
                 if not (checking_for_exists and path_obj_exists): return False
+                if (not path_paved): return self.path_gone_ok and (not path_paved)
+
                 return self.in_f_find(self.checking_for, True, self.path)
             # --~----~----~----~--
             case CheckType.REGEX_NO_MATCH:     # is the regex in checking_for never found in the file
                 if not (checking_for_exists and path_obj_exists): return False
+                if (not path_paved): return self.path_gone_ok and (not path_paved)
+                
                 return not self.in_f_find(self.checking_for, True, self.path)
             # --~----~----~----~--
             case CheckType.PATH_EXISTS:          # does the path exist?
@@ -134,16 +136,22 @@ class Answer():
             # --~----~----~----~--
             case CheckType.PERMS_OCTAL:          # does the permission octal match?
                 if not (checking_for_exists and path_obj_exists): return False
+                if (not path_paved): return self.path_gone_ok and (not path_paved)
+
                 result = subprocess.run(["stat", r"-c '%a'", self.path.as_posix()], capture_output=True, encoding="utf-8")
                 return self.checking_for in result.stdout
             # --~----~----~----~--
             case CheckType.OWNER:       # does the file owner username match checking_for?
                 if not (checking_for_exists and path_obj_exists): return False
+                if (not path_paved): return self.path_gone_ok and (not path_paved)
+
                 result = self.path.owner()
                 return result == self.checking_for
             # --~----~----~----~--
             case CheckType.GROUP:       # does the file owner gid match checking_for?
                 if not (checking_for_exists and path_obj_exists): return False
+                if (not path_paved): return self.path_gone_ok and (not path_paved)
+                
                 result = self.path.group()
                 return result == self.checking_for
             # --~----~----~----~--
