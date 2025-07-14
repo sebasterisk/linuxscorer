@@ -18,7 +18,7 @@ class Module(App):
         # phorensixs
         Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ANSWER:\s*spiritofthescarf\s*$", in_path = Path("/home/sebastian/Desktop/Ticket-1.txt")), points = 14, desc = "Correct response to Ticket 1"),
         Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ANSWER:\s*making_more_propogandaa\s*$", in_path = Path("/home/sebastian/Desktop/Ticket-2.txt")), points = 8, desc = "Correct response to Ticket 2"),
-
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ANSWER:\s*/home/cbaummer/.plist\s*$", in_path = Path("/home/sebastian/Desktop/Ticket-2.txt")), points = 8, desc = "Correct response to Ticket 3"),
         Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ANSWER:\s*7772\s*$", in_path = Path("/home/sebastian/Desktop/Ticket-4.txt")), points = 4, desc = "Correct response to Ticket 4"),
 
         # user/group
@@ -83,6 +83,8 @@ class Module(App):
         Vuln(Answer(CheckType.SERVICE_DOWN, checking_for="apache2"), points = 6, desc = "Apache2 service removed or disabled"),
         Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/bin/x11vnc")), points = 6, desc = "Unwanted software x11vnc removed"),
         Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/usr/games/xcowsay")), points = 6, desc = "Unwanted software xcowsay removed"),
+        Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/usr/bin/hashcat")), points = 6, desc = "Unwanted software hashcat removed"),
+        Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/usr/bin/crunch")), points = 6, desc = "Unwanted software crunch removed"),
 
         # sysctl
         Vuln(Answer(CheckType.REGEX_MATCHES, checking_for=r"^net.ipv4.conf.all.accept_source_route = 0", in_path=Path("/etc/shadow")), points = 6, desc = "System does not accept source route"),
