@@ -171,8 +171,12 @@ class Answer():
             # --~----~----~----~--
             case CheckType.STRING_FOUND_CMD_STDOUT:
                 if not (checking_for_exists and custom_command_exists): return False
-                result: subprocess.CompletedProcess = subprocess.run(self.command_to_run, capture_output=True, encoding="utf-8")
-                return self.checking_for in result.stdout
+
+                try:
+                    result: subprocess.CompletedProcess = subprocess.run(self.command_to_run, capture_output=True, encoding="utf-8")
+                    return self.checking_for in result.stdout
+                except:
+                    return self.path_gone_ok
             
 
 class Vuln():
