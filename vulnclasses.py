@@ -58,12 +58,14 @@ class Answer():
             self,                                
             type: CheckType,
             checking_for: str | None = None, 
-            in_path: path | None = None
+            in_path: path | None = None,
+            path_gone_ok: bool = False,
         ):
 
         self.type = type
         self.checking_for = checking_for
         self.path = in_path
+        self.path_gone_ok = path_gone_ok
     
     def in_f_find(self, string: str, regex: bool, filepath: path):
         if regex:
@@ -84,45 +86,51 @@ class Answer():
 
     def check_answer(self):
         checking_for_exists = isinstance(self.checking_for, str)
-        path_exists = isinstance(self.path, path)
+        path_obj_exists = isinstance(self.path, path)
+        path_paved = self.path.exists() if path_obj_exists else False
 
+        if (self.path_gone_ok) and (not path_paved): 
+            return True
+        elif (not self.path_gone_ok) and (not path_paved):
+            return False
+        
         match self.type:
             case CheckType.STRING_FOUND:      # is checking_for in the file?    
-                if not (checking_for_exists and path_exists): return False
+                if not (checking_for_exists and path_obj_exists): return False
                 return self.in_f_find(self.checking_for, False, self.path)
             # --~----~----~----~--
             case CheckType.STRING_NOT_FOUND:     # is checking_for NOT in the file?
-                if not (checking_for_exists and path_exists): return False
+                if not (checking_for_exists and path_obj_exists): return False
                 return not self.in_f_find(self.checking_for, False, self.path)
             # --~----~----~----~--
             case CheckType.REGEX_MATCHES:    # is the regex in checking_for matched anywhere in the file?
-                if not (checking_for_exists and path_exists): return False
+                if not (checking_for_exists and path_obj_exists): return False
                 return self.in_f_find(self.checking_for, True, self.path)
             # --~----~----~----~--
             case CheckType.REGEX_NO_MATCH:     # is the regex in checking_for never found in the file
-                if not (checking_for_exists and path_exists): return False
+                if not (checking_for_exists and path_obj_exists): return False
                 return not self.in_f_find(self.checking_for, True, self.path)
             # --~----~----~----~--
             case CheckType.PATH_EXISTS:          # does the path exist?
-                if not (path_exists): return False
+                if not (path_obj_exists): return False
                 return self.path.exists()
             # --~----~----~----~--
             case CheckType.PATH_GONE:      # does the path not exist?
-                if not (path_exists): return False
+                if not (path_obj_exists): return False
                 return not self.path.exists()
             # --~----~----~----~--
             case CheckType.PERMS_OCTAL:          # does the permission octal match?
-                if not (checking_for_exists and path_exists): return False
+                if not (checking_for_exists and path_obj_exists): return False
                 result = subprocess.run(["stat", r"-c '%a'", self.path.as_posix()], capture_output=True, encoding="utf-8")
                 return self.checking_for in result.stdout
             # --~----~----~----~--
             case CheckType.OWNER:       # does the file owner username match checking_for?
-                if not (checking_for_exists and path_exists): return False
+                if not (checking_for_exists and path_obj_exists): return False
                 result = self.path.owner()
                 return result == self.checking_for
             # --~----~----~----~--
             case CheckType.GROUP:       # does the file owner gid match checking_for?
-                if not (checking_for_exists and path_exists): return False
+                if not (checking_for_exists and path_obj_exists): return False
                 result = self.path.group()
                 return result == self.checking_for
             # --~----~----~----~--
