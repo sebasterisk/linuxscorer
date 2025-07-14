@@ -149,15 +149,15 @@ class Answer():
             # --~----~----~----~--
             case CheckType.SERVICE_UP:          # is the SystemV service active?
                 if not (checking_for_exists): return False
-                result = subprocess.run(["systemctl", "is-active", "--quiet", self.checking_for])
-                if result == 0:
+                result = subprocess.call(["systemctl", "is-active", "--quiet", self.checking_for])
+                if result.returncode == 0:
                     return True
                 return False
             # --~----~----~----~--
             case CheckType.SERVICE_DOWN:
                 if not (checking_for_exists): return False
                 result = subprocess.call(["systemctl", "is-active", "--quiet", self.checking_for])
-                if result != 0:
+                if result.returncode != 0:
                     return True
                 return False
             # --~----~----~----~--
