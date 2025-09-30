@@ -11,10 +11,24 @@ from textual.binding import Binding
 import datetime
 
 class Module(App):
-    TITLE = "Linux Returner Diagnostic Image"
+    TITLE = "Linux Beginner Lab 2 - Passwords & Sudoers"
     CSS_PATH = "./css.tcss"
     
     VULNS = [ 
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for= r"^password\s+requisite\s+pam_pwquality\.so", in_path=Path("/etc/pam.d/common-password")), points=5, desc="pwquality is used in PAM"),
+        Vuln(Answer(CheckType.STRING_NOT_FOUND, checking_for="nullok", in_path=Path("/etc/pam.d/common-password")), points=5, desc="null passwords do not validate"),
+
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^\s*minlen\s*=\s*12", in_path = Path("/etc/security/pwquality.conf")), points = 5, desc = "Password must be at least 12 characters in length"),
+        
+        Vuln(
+            Answer(CheckType.REGEX_MATCHES, checking_for = r"^\s*dcredit\s*=\s*-1", in_path = Path("/etc/security/pwquality.conf")), 
+            Answer(CheckType.REGEX_MATCHES, checking_for = r"^\s*ucredit\s*=\s*-1", in_path = Path("/etc/security/pwquality.conf")), 
+            Answer(CheckType.REGEX_MATCHES, checking_for = r"^\s*lcredit\s*=\s*-1", in_path = Path("/etc/security/pwquality.conf")), 
+            Answer(CheckType.REGEX_MATCHES, checking_for = r"^\s*ocredit\s*=\s*-1", in_path = Path("/etc/security/pwquality.conf")), 
+            points = 5, desc = "Password must have 1 uppercase, 1 lowercase, 1 digit, and 1 special character"
+        ),
+
+        Vuln(Answer(CheckType.STRING_NOT_FOUND, checking_for="NOPASSWD", in_path=Path("/etc/sudoers")), points=5, desc="Password required for sudo"),
     ]
 
     VULNLIST = VulnList(VULNS)
