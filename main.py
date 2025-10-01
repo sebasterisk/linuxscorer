@@ -15,6 +15,19 @@ class Module(App):
     CSS_PATH = "./css.tcss"
     
     VULNS = [ 
+        Vuln(Answer(CheckType.SERVICE_UP, checking_for="sshd"), points = 5, desc = "SSH up and running"),
+
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^Protocol 2", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH Protocol 2 enabled"),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^StrictModes yes", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH Strict modes enabled"),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^PermitRootLogin no", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH root login disabled"),
+        
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^AuthenticationMethods.+publickey.+", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "Public key authentication defined"),
+        Vuln(
+            Answer(CheckType.PATH_EXISTS, in_path=Path("/home/sebastian/.ssh/id_rsa")), 
+            Answer(CheckType.PATH_EXISTS, in_path=Path("/home/sebastian/.ssh/id_rsa.pub")), 
+            points = 5, desc = "SSH key pair made for sebastian"
+        ),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ssh-rsa", in_path = Path("/home/sebastian/.ssh/authorized_keys")), points = 5, desc = "SSH public key added to sebastian's authorized keys"),
     ]
 
     VULNLIST = VulnList(VULNS)
