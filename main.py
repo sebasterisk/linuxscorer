@@ -14,7 +14,14 @@ class Module(App):
     TITLE = "Linux Returner Diagnostic Image"
     CSS_PATH = "./css.tcss"
     
-    VULNS = [ 
+    VULNS = [
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for=r"^1$", in_path=Path("/proc/sys/net/ipv4/conf/default/rp_filter")), points = 5, desc = "IP forwarding disabled"), 
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for=r"^0$", in_path=Path("/proc/sys/net/ipv4/ip_forward")), points = 5, desc = "IP forwarding disabled"),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for=r"^0$", in_path=Path("/proc/sys/net/ipv4/conf/all/accept_redirects")), points = 5, desc = "ICMP redirects disabled"),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for=r"^0$", in_path=Path("/proc/sys/net/ipv4/conf/all/accept_source_route")), points = 5, desc = "I am not a router!!"),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for=r"^1$", in_path=Path("/proc/sys/net/ipv4/conf/all/log_martians")), points = 5, desc = "Martian packets logged"),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for=r"^1$", in_path=Path("/proc/sys/net/ipv4/icmp_echo_ignore_all")), points = 5, desc = "Ignores pings"),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for=r"^1$", in_path=Path("/proc/sys/net/ipv4/tcp_rfc1337")), points = 5, desc = "TIME-WAIT assassination measures enabled"),
     ]
 
     VULNLIST = VulnList(VULNS)
