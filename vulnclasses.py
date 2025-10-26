@@ -200,7 +200,10 @@ class Vuln():
         self.points = points
         self.desc = desc
         self.order = order
-    
+
+    def __str__(self):
+        return f"{self.points} pts: {self.desc}"
+
     def check_full_solved(self) -> bool:
         for i,v in enumerate(self.answer):
             result = v.check_answer()
@@ -226,6 +229,7 @@ class VulnList():
             completed_vulns.sort(key = lambda x: x.order)
     
         return completed_vulns
+
     
     def get_completed_vuln_score(self) -> int:
         list = self.get_completed_vulns()
