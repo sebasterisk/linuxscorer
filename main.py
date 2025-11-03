@@ -16,7 +16,7 @@ class Module(App):
     
     VULNS = [
         Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ANSWER:\s*192.168.133.1\s*$", in_path = Path("/home/sebastian/Desktop/Forensics Question 01")), points = 10, desc = "Correct response to Forensics 1"),
-        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ANSWER:\s*forensics2{truthbehindthescarf}\s*$", in_path = Path("/home/sebastian/Desktop/Forensics Question 01")), points = 10, desc = "Correct response to Forensics 1"),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ANSWER:\s*forensics2{truthbehindthescarf}\s*$", in_path = Path("/home/sebastian/Desktop/Forensics Question 02")), points = 10, desc = "Correct response to Forensics 1"),
 
         # Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ANSWER:\s*af7662b1c79e68aa873271ee5c9414ab\s*$", in_path = Path("/home/sebastian/Desktop/Forensics Question 02")), points = 10, desc = "Correct response to Forensics 2"),
 
@@ -44,12 +44,12 @@ class Module(App):
         Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^X11Forwarding no", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH X11 forwarding disabled"),
 
         Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"valid users = @adm\s*$", in_path = Path("/etc/samba/smb.conf")), points = 5, desc = "Removed unauthorized user from shared folder"),
-        Vuln(Answer(CheckType.REGEX_NO_MATCH, checking_for = r"guest ok = yes", in_path = Path("/etc/samba/smb.conf")), points = 5, desc = "Samba disallows guest user"),
+        Vuln(Answer(CheckType.REGEX_NO_MATCH, checking_for = r"^\s*guest ok = yes", in_path = Path("/etc/samba/smb.conf")), points = 5, desc = "Samba disallows guest user"),
         Vuln(Answer(CheckType.REGEX_NO_MATCH, checking_for = r"guest account = sebastian", in_path = Path("/etc/samba/smb.conf")), points = 5, desc = "Samba does not use sebastian as guest user"),
 
         Vuln(Answer(CheckType.REGEX_NO_MATCH, checking_for = r"Require ip 192.168.133.1", in_path = Path("/etc/apache2/apache2.conf")), points = 5, desc = "The IP address no longer has access to unauthorized resources"),
         Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"ErrorDocument 404 /not_found.html", in_path = Path("/etc/apache2/sites-available/000-default.conf")), points = 5, desc = "The 404 error document is configured"),
-        Vuln(Answer(CheckType.PATH_GONE, in_path = Path("/etc/apache2/sites-available/010-other.conf")), points = 5, desc = "Unauthorized website configuration disabled or removed"),
+        Vuln(Answer(CheckType.PATH_GONE, in_path = Path("/etc/apache2/sites-enabled/010-other.conf")), points = 5, desc = "Unauthorized website configuration disabled or removed"),
         Vuln(
             Answer(CheckType.STRING_NOT_FOUND, checking_for="james", in_path=Path("/etc/apache2/envvars")),
             Answer(CheckType.REGEX_MATCHES, checking_for=r"^export APACHE_RUN_USER=www-data", in_path=Path("/etc/apache2/envvars")),
@@ -57,7 +57,7 @@ class Module(App):
             points=5, desc="Apache runs as user www-data instead of user james"
         ),
         Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ServerTokens Prod", in_path = Path("/etc/apache2/conf-enabled/security.conf")), points = 5, desc = "Apache server tokens set to least"),
-        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ServerSignature Off", in_path = Path("/etc/samba/smb.conf")), points = 5, desc = "Apache server signature disabled"),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ServerSignature Off", in_path = Path("/etc/apache2/conf-enabled/security.conf")), points = 5, desc = "Apache server signature disabled"),
 
         Vuln(Answer(CheckType.STRING_FOUND_CMD_STDOUT, checking_for="refresh-schedule-enabled=true", command_to_run=["dconf", "dump", "/"]), points = 5, desc = "System refreshes list of updates automatically"),
 
