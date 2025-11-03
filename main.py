@@ -15,36 +15,60 @@ class Module(App):
     CSS_PATH = "./css.tcss"
     
     VULNS = [
-        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ANSWER:\s*7.3.7.2\s*$", in_path = Path("/home/sebastian/Desktop/Forensics Question 01")), points = 10, desc = "Correct response to Forensics 1"),
-        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ANSWER:\s*af7662b1c79e68aa873271ee5c9414ab\s*$", in_path = Path("/home/sebastian/Desktop/Forensics Question 02")), points = 10, desc = "Correct response to Forensics 2"),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ANSWER:\s*192.168.133.1\s*$", in_path = Path("/home/sebastian/Desktop/Forensics Question 01")), points = 10, desc = "Correct response to Forensics 1"),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ANSWER:\s*forensics2{truthbehindthescarf}\s*$", in_path = Path("/home/sebastian/Desktop/Forensics Question 01")), points = 10, desc = "Correct response to Forensics 1"),
+
+        # Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ANSWER:\s*af7662b1c79e68aa873271ee5c9414ab\s*$", in_path = Path("/home/sebastian/Desktop/Forensics Question 02")), points = 10, desc = "Correct response to Forensics 2"),
 
         Vuln(
-            Answer(CheckType.REGEX_NO_MATCH, checking_for = r"^adm.+cadan.+", in_path = Path("/etc/group")),
-            Answer(CheckType.REGEX_NO_MATCH, checking_for = r"^sudo.+cadan.+", in_path = Path("/etc/group")),
-            points = 5, desc = "User cadan is not an administrator"
+            Answer(CheckType.REGEX_NO_MATCH, checking_for = r"^adm.+kristoffer.+", in_path = Path("/etc/group")),
+            Answer(CheckType.REGEX_NO_MATCH, checking_for = r"^sudo.+kristoffer.+", in_path = Path("/etc/group")),
+            points = 5, desc = "User kristoffer is not an administrator"
         ),
-        Vuln(
-            Answer(CheckType.REGEX_MATCHES, checking_for = r"^helpers.+alan.+", in_path = Path("/etc/group")),
-            points = 5, desc = "Changed appropriate groups for user alan"
-        ),
-        Vuln(Answer(CheckType.STRING_NOT_FOUND, checking_for = "drtan", in_path = Path("/etc/group")), points = 5, desc = "Remove unauthorized user drtan"),
-        Vuln(Answer(CheckType.STRING_NOT_FOUND, checking_for = "eliot", in_path = Path("/etc/group")), points = 5, desc = "Remove unauthorized user eliot"),
-        Vuln(Answer(CheckType.STRING_NOT_FOUND, checking_for = "jason:$y$j9T$e.oa1ldxccK2Sa2p/", in_path = Path("/etc/shadow")), points = 5, desc = "Change insecure password for jason"),
 
-        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^PASS_MAX_DAYS\s+[0-9]{1,3}", in_path = Path("/etc/login.defs")), points = 5, desc = "Password maximum age is set"),
+        Vuln(Answer(CheckType.STRING_NOT_FOUND, checking_for = "stadler", in_path = Path("/etc/group")), points = 5, desc = "Remove unauthorized user stadler"),
+        Vuln(Answer(CheckType.STRING_NOT_FOUND, checking_for = "maxwell", in_path = Path("/etc/group")), points = 5, desc = "Remove unauthorized user maxwell"),
 
         Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ENABLED=yes", in_path = Path("/etc/ufw/ufw.conf")), points = 5, desc = "UFW is enabled"),
 
-        Vuln(Answer(CheckType.SERVICE_DOWN, checking_for="apache2"), points = 5, desc = "Apache2 service removed or disabled"),
-        Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/usr/games/freeciv-server")), points = 5, desc = "Unwanted software freeciv-server removed"),
-        Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/usr/bin/wireshark")), points = 5, desc = "Unwanted software wireshark removed"),
-        Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/home/hayden/Music/Vylet Pony - Huntress.mp3")), points = 5, desc = "Removed prohibited media files"),
+        # Vuln(Answer(CheckType.SERVICE_DOWN, checking_for="apache2"), points = 5, desc = "Apache2 service removed or disabled"),
+        # Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/usr/games/freeciv-server")), points = 5, desc = "Unwanted software freeciv-server removed"),
+        # Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/usr/bin/wireshark")), points = 5, desc = "Unwanted software wireshark removed"),
+        # Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/home/hayden/Music/Vylet Pony - Huntress.mp3")), points = 5, desc = "Removed prohibited media files"),
 
-        Vuln(Answer(CheckType.STRING_FOUND_CMD_STDOUT, checking_for="TriggeredBy", command_to_run=["systemctl", "status", "mintupdate-automation-upgrade"]), points = 6, desc = "Updates are applied automatically"),
-        Vuln(Answer(CheckType.STRING_NOT_FOUND_CMD_STDOUT, checking_for="7.3.7.2", command_to_run=["libreoffice", "--version"]), points = 6, desc = "LibreOffice is updated"),
-        Vuln(Answer(CheckType.STRING_NOT_FOUND_CMD_STDOUT, checking_for="121.0", command_to_run=["firefox", "-v"]), points = 6, desc = "Firefox is updated"),
+        # Vuln(Answer(CheckType.STRING_FOUND_CMD_STDOUT, checking_for="TriggeredBy", command_to_run=["systemctl", "status", "mintupdate-automation-upgrade"]), points = 6, desc = "Updates are applied automatically"),
+        # Vuln(Answer(CheckType.STRING_NOT_FOUND_CMD_STDOUT, checking_for="7.3.7.2", command_to_run=["libreoffice", "--version"]), points = 6, desc = "LibreOffice is updated"),
+        # Vuln(Answer(CheckType.STRING_NOT_FOUND_CMD_STDOUT, checking_for="121.0", command_to_run=["firefox", "-v"]), points = 6, desc = "Firefox is updated"),
 
-        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^PermitRootLogin no", in_path = Path("/etc/ssh/sshd_config")), points = 6, desc = "SSH root login disabled"),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^PermitRootLogin no", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH root login disabled"),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^X11Forwarding no", in_path = Path("/etc/ssh/sshd_config")), points = 5, desc = "SSH X11 forwarding disabled"),
+
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"valid users = @adm\s*$", in_path = Path("/etc/samba/smb.conf")), points = 5, desc = "Removed unauthorized user from shared folder"),
+        Vuln(Answer(CheckType.REGEX_NO_MATCH, checking_for = r"guest ok = yes", in_path = Path("/etc/samba/smb.conf")), points = 5, desc = "Samba disallows guest user"),
+        Vuln(Answer(CheckType.REGEX_NO_MATCH, checking_for = r"guest account = sebastian", in_path = Path("/etc/samba/smb.conf")), points = 5, desc = "Samba does not use sebastian as guest user"),
+
+        Vuln(Answer(CheckType.REGEX_NO_MATCH, checking_for = r"Require ip 192.168.133.1", in_path = Path("/etc/apache2/apache2.conf")), points = 5, desc = "The IP address no longer has access to unauthorized resources"),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"ErrorDocument 404 /not_found.html", in_path = Path("/etc/apache2/sites-available/000-default.conf")), points = 5, desc = "The 404 error document is configured"),
+        Vuln(Answer(CheckType.PATH_GONE, in_path = Path("/etc/apache2/sites-available/010-other.conf")), points = 5, desc = "Unauthorized website configuration disabled or removed"),
+        Vuln(
+            Answer(CheckType.STRING_NOT_FOUND, checking_for="james", in_path=Path("/etc/apache2/envvars")),
+            Answer(CheckType.REGEX_MATCHES, checking_for=r"^export APACHE_RUN_USER=www-data", in_path=Path("/etc/apache2/envvars")),
+            Answer(CheckType.REGEX_MATCHES, checking_for=r"^export APACHE_RUN_GROUP=www-data", in_path=Path("/etc/apache2/envvars")),
+            points=5, desc="Apache runs as user www-data instead of user james"
+        ),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ServerTokens Prod", in_path = Path("/etc/apache2/conf-enabled/security.conf")), points = 5, desc = "Apache server tokens set to least"),
+        Vuln(Answer(CheckType.REGEX_MATCHES, checking_for = r"^ServerSignature Off", in_path = Path("/etc/samba/smb.conf")), points = 5, desc = "Apache server signature disabled"),
+
+        Vuln(Answer(CheckType.STRING_FOUND_CMD_STDOUT, checking_for="refresh-schedule-enabled=true", command_to_run=["dconf", "dump", "/"]), points = 5, desc = "System refreshes list of updates automatically"),
+
+        Vuln(Answer(CheckType.STRING_FOUND, checking_for = "0", in_path = Path("/proc/sys/net/ipv4/ip_forward")), points = 5, desc = "IP forwarding disabled"),
+        Vuln(Answer(CheckType.STRING_FOUND, checking_for = "1", in_path = Path("/proc/sys/net/ipv4/conf/all/log_martians")), points = 5, desc = "Logs IPv4 martian packets"),
+
+        Vuln(Answer(CheckType.STRING_NOT_FOUND, checking_for = "wall -n", in_path = Path("/etc/crontab")), points = 5, desc = "Malicious crontab removed"),
+
+        Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/usr/sbin/4g8")), points = 5, desc = "Unwanted software 4g8 removed"),
+        Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/usr/bin/netcat")), points = 5, desc = "Unwanted software netcat removed"),
+        Vuln(Answer(CheckType.PATH_GONE, in_path=Path("/usr/bin/php")), points = 5, desc = "Unwanted software PHP removed"),
     ]
 
     VULNLIST = VulnList(VULNS)
